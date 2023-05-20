@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navbar, NavItem } from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 class Header extends React.Component {
   render() {
@@ -10,7 +10,7 @@ class Header extends React.Component {
         <NavItem><Link to="/" className="nav-link">Home</Link></NavItem>
         {/* PLACEHOLDER: render a navigation link to the about page */}
       </Navbar>
-    )
+    );
   }
 }
 
