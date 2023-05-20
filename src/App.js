@@ -7,7 +7,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route
-} from "react-router-dom";
+} from 'react-router-dom';
 
 class App extends React.Component {
   render() {
@@ -16,7 +16,7 @@ class App extends React.Component {
         <Router>
           <Header />
           <Routes>
-            <Route 
+            <Route
               exact path="/"
               element={<BestBooks />}
             >
@@ -26,7 +26,7 @@ class App extends React.Component {
           <Footer />
         </Router>
       </>
-    )
+    );
   }
 }
 
