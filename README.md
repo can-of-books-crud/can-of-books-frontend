@@ -101,6 +101,18 @@ Estimate of time needed to complete: 30 minutes
 
 Start time: 2 p.m. PST
 
-Finish time: _____
+Finish time: 5 p.m. PST
 
-Actual time needed to complete: _____
+Actual time needed to complete: 3 hours
+
+<hr>
+
+Name of feature: Storage
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 5 p.m. PST
+
+Finish time: 6 p.m. PST
+
+Actual time needed to complete: 1 hour
