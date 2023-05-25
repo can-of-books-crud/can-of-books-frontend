@@ -1,13 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Button } from 'react-bootstrap';
 import Book from './components/Book';
+import BookFormModal from './components/BookFormModal';
 
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      showModal: false
     };
   }
 
@@ -22,17 +24,33 @@ class BestBooks extends React.Component {
     getBooks();
   }
 
+  openForm = () => {
+    this.setState({ showModal: true });
+  };
+
+  closeForm = () => {
+    this.setState({ showModal: false });
+  };
+
+  addBook = (newBook) => {
+
+    const url = `${process.env.REACT_APP_SERVER}/books`;
+    axios.post(url, newBook)
+      .then(response => this.setState({ books: [...this.state.books, response.data] }))
+      .catch(error => console.error(error));
+  };
+
   render() {
 
     /* TODO: render all the books in a Carousel */
 
-    const {books} = this.state;
+    const { books } = this.state;
 
     return (
       <>
         <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
 
-        {this.state.books.length > 0 ? (
+        {books.length > 0 ? (
           <Carousel variant='dark'>
             {books.map(book =>
               <Carousel.Item key={book._id}>
@@ -43,6 +61,8 @@ class BestBooks extends React.Component {
         ) : (
           <h3>No Books Found :(</h3>
         )}
+        <Button onClick={this.openForm}>Add Book</Button>
+        {this.state.showModal && (<BookFormModal addBook={this.addBook} showModal={this.state.showModal} closeForm={this.closeForm} />)}
       </>
     );
   }
