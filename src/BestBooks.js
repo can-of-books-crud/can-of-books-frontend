@@ -40,6 +40,13 @@ class BestBooks extends React.Component {
       .catch(error => console.error(error));
   };
 
+  deleteBook = async (bookToDelete) => {
+    const url = `${process.env.REACT_APP_SERVER}/books/${bookToDelete._id}`;
+    await axios.delete(url);
+    const updatedBooks = this.state.books.filter(book => book._id !== bookToDelete._id);
+    this.setState({books: updatedBooks});
+  };
+
   render() {
 
     /* TODO: render all the books in a Carousel */
@@ -48,20 +55,21 @@ class BestBooks extends React.Component {
 
     return (
       <>
-        <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+        <h2 className='text-center'>My Essential Lifelong Learning &amp; Formation Shelf</h2>
 
         {books.length > 0 ? (
           <Carousel variant='dark'>
             {books.map(book =>
               <Carousel.Item key={book._id}>
                 <Book book={book} />
+                <div style={{textAlign: 'center'}}><Button onClick={() => this.deleteBook(book)}>Remove Book</Button></div>
               </Carousel.Item>
             )}
           </Carousel>
         ) : (
           <h3>No Books Found :(</h3>
         )}
-        <Button onClick={this.openForm}>Add Book</Button>
+        <div className='text-center'><Button onClick={this.openForm} variant='secondary'>Add Book</Button></div>
         {this.state.showModal && (<BookFormModal addBook={this.addBook} showModal={this.state.showModal} closeForm={this.closeForm} />)}
       </>
     );

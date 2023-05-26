@@ -44,10 +44,6 @@ class BookFormModal extends React.Component {
               </Button>
             </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary">Close</Button>
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
         </Modal>
       </div>
     );

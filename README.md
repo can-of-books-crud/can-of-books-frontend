@@ -130,3 +130,25 @@ Finish time: 6:54 p.m. PST
 Actual time needed to complete: 46 min
 
 <hr>
+
+Name of feature: CREATE
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 6:47pm
+
+Finish time: 9:40pm
+
+Actual time needed to complete: approximately 3 hours
+
+<hr>
+
+Name of feature: DELETE
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 7:00pm
+
+Finish time: 7:35pm
+
+Actual time needed to complete: 35 minutes
