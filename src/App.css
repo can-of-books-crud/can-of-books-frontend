@@ -1,0 +1,9 @@
+.carousel-item{
+    height: 500px;
+}
+.book{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px;
+}

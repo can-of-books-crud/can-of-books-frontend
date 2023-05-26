@@ -55,7 +55,7 @@ class BestBooks extends React.Component {
 
     return (
       <>
-        <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
+        <h2 className='text-center'>My Essential Lifelong Learning &amp; Formation Shelf</h2>
 
         {books.length > 0 ? (
           <Carousel variant='dark'>
@@ -69,7 +69,7 @@ class BestBooks extends React.Component {
         ) : (
           <h3>No Books Found :(</h3>
         )}
-        <Button onClick={this.openForm}>Add Book</Button>
+        <div className='text-center'><Button onClick={this.openForm} variant='secondary'>Add Book</Button></div>
         {this.state.showModal && (<BookFormModal addBook={this.addBook} showModal={this.state.showModal} closeForm={this.closeForm} />)}
       </>
     );
