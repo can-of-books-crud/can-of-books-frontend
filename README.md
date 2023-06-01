@@ -152,3 +152,15 @@ Start time: 7:00pm
 Finish time: 7:35pm
 
 Actual time needed to complete: 35 minutes
+
+<hr>
+
+Name of feature: UPDATE
+
+Estimate of time needed to complete: 1 hour
+
+Start time: 6:30pm
+
+Finish time: 9:40pm
+
+Actual time needed to complete: 2 hours 50 minutes (spent extra time making sure our check worked correctly)
