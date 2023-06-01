@@ -2,14 +2,17 @@ import React from 'react';
 import axios from 'axios';
 import { Carousel, Button } from 'react-bootstrap';
 import Book from './components/Book';
-import BookFormModal from './components/BookFormModal';
+import AddBookModal from './components/AddBookModal';
+import EditBookModal from './components/EditBookModal';
 
 class BestBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       books: [],
-      showModal: false
+      showAddModal: false,
+      showUpdateModal: false,
+      selectedBook: {}
     };
   }
 
@@ -24,12 +27,20 @@ class BestBooks extends React.Component {
     getBooks();
   }
 
-  openForm = () => {
-    this.setState({ showModal: true });
+  openAddForm = () => {
+    this.setState({ showAddModal: true });
   };
 
-  closeForm = () => {
-    this.setState({ showModal: false });
+  closeAddForm = () => {
+    this.setState({ showAddModal: false });
+  };
+
+  openEditForm = (book) => {
+    this.setState({ showUpdateModal: true, selectedBook: book });
+  };
+
+  closeEditForm = () => {
+    this.setState({ showUpdateModal: false });
   };
 
   addBook = (newBook) => {
@@ -44,7 +55,15 @@ class BestBooks extends React.Component {
     const url = `${process.env.REACT_APP_SERVER}/books/${bookToDelete._id}`;
     await axios.delete(url);
     const updatedBooks = this.state.books.filter(book => book._id !== bookToDelete._id);
-    this.setState({books: updatedBooks});
+    this.setState({ books: updatedBooks });
+  };
+
+  editBook = async (bookToEdit) => {
+    const url = `${process.env.REACT_APP_SERVER}/books/${this.state.selectedBook._id}`;
+    await axios.put(url, bookToEdit);
+    const books = [...this.state.books];
+    books.splice(books.findIndex(book => book._id === this.state.selectedBook._id), 1, bookToEdit);
+    this.setState({ books });
   };
 
   render() {
@@ -62,15 +81,32 @@ class BestBooks extends React.Component {
             {books.map(book =>
               <Carousel.Item key={book._id}>
                 <Book book={book} />
-                <div style={{textAlign: 'center'}}><Button onClick={() => this.deleteBook(book)}>Remove Book</Button></div>
+                <div style={{ textAlign: 'center' }}>
+                  <Button onClick={() => this.deleteBook(book)}>Remove Book</Button>
+                  <Button onClick={() => this.openEditForm(book)}>Edit Book</Button>
+                </div>
               </Carousel.Item>
             )}
           </Carousel>
         ) : (
           <h3>No Books Found :(</h3>
         )}
-        <div className='text-center'><Button onClick={this.openForm} variant='secondary'>Add Book</Button></div>
-        {this.state.showModal && (<BookFormModal addBook={this.addBook} showModal={this.state.showModal} closeForm={this.closeForm} />)}
+        <div className='text-center'><Button onClick={this.openAddForm} variant='secondary'>Add Book</Button></div>
+        {this.state.showAddModal && (
+          <AddBookModal
+            addBook={this.addBook}
+            showAddModal={this.state.showAddModal}
+            closeAddForm={this.closeAddForm}
+          />)}
+
+        {this.state.showUpdateModal && (
+          <EditBookModal
+            showUpdateModal={this.state.showUpdateModal}
+            closeEditForm={this.closeEditForm}
+            selectedBook={this.state.selectedBook}
+            editBook={this.editBook}
+          />
+        )}
       </>
     );
   }

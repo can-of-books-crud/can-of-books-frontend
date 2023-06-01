@@ -1,26 +1,26 @@
 import React from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-class BookFormModal extends React.Component {
+class AddBookModal extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
     const newBook = {
       title: e.target.title.value,
       description: e.target.description.value,
-      available: e.target.available.checked
+      status: e.target.status.checked
     };
     this.props.addBook(newBook);
-    this.props.closeForm();
+    this.props.closeAddForm();
   };
 
   render() {
     return (
       <div
-        className="modal show"
-        style={{ display: 'block', position: 'initial' }}
+        // className="modal show"
+        // style={{ display: 'block', position: 'initial' }}
       >
-        <Modal show={this.props.showModal}>
+        <Modal show={this.props.showAddModal}>
           <Modal.Header closeButton>
             <Modal.Title>Add Book</Modal.Title>
           </Modal.Header>
@@ -36,7 +36,7 @@ class BookFormModal extends React.Component {
                 <Form.Label>Description</Form.Label>
                 <Form.Control type="text" placeholder="Enter book description" />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="available">
+              <Form.Group className="mb-3" controlId="status">
                 <Form.Check type="checkbox" label="Check me out" />
               </Form.Group>
               <Button variant="primary" type="submit">
@@ -51,4 +51,4 @@ class BookFormModal extends React.Component {
 }
 
 
-export default BookFormModal;
+export default AddBookModal;
