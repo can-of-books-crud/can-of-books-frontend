@@ -164,3 +164,15 @@ Start time: 6:30pm
 Finish time: 9:40pm
 
 Actual time needed to complete: 2 hours 50 minutes (spent extra time making sure our check worked correctly)
+
+<hr>
+
+Name of feature: AUTHENTICATION
+
+Estimate of time needed to complete: 2 hours
+
+Start time: 6:40pm
+
+Finish time: 9
+
+Actual time needed to complete: 
