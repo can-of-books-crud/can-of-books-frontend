@@ -4,6 +4,7 @@ import { Carousel, Button } from 'react-bootstrap';
 import Book from './components/Book';
 import AddBookModal from './components/AddBookModal';
 import EditBookModal from './components/EditBookModal';
+import { withAuth0 } from '@auth0/auth0-react';
 
 class BestBooks extends React.Component {
   constructor(props) {
@@ -18,13 +19,7 @@ class BestBooks extends React.Component {
 
   /* TODO: Make a GET request to your API to fetch all the books from the database  */
   componentDidMount() {
-    const getBooks = () => {
-      axios
-        .get(`${process.env.REACT_APP_SERVER}/books`)
-        .then(response => this.setState({ books: response.data }, () => console.log(this.state.books)))
-        .catch(err => console.error(err));
-    };
-    getBooks();
+    this.getBooks();
   }
 
   openAddForm = () => {
@@ -43,27 +38,81 @@ class BestBooks extends React.Component {
     this.setState({ showUpdateModal: false });
   };
 
-  addBook = (newBook) => {
+  getToken = () => {
+    console.log(this.props);
+    return this.props.auth0.getIdTokenClaims()
+      .then(res => res.__raw)
+      .catch(err => console.error(err))
+  };
 
-    const url = `${process.env.REACT_APP_SERVER}/books`;
-    axios.post(url, newBook)
+  getBooks = () => {
+    this.getToken()
+      .then(jwt => {
+        const config = {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        }
+        return axios.get(`${process.env.REACT_APP_SERVER}/books`, config)
+      })
+      .then(bookData => this.setState({ books: bookData.data }))
+      .catch(err => console.error(err));
+
+    // axios
+    //   .get(`${process.env.REACT_APP_SERVER}/books`)
+    //   .then(response => this.setState({ books: response.data }, () => console.log(this.state.books)))
+    //   .catch(err => console.error(err));
+  };
+
+  addBook = (newBook) => {
+    this.getToken()
+      .then(jwt => {
+        const config = {
+          headers: { 'Authorization': `Bearer ${jwt}` }
+        }
+        return axios.post(`${process.env.REACT_APP_SERVER}/books`, newBook, config)
+      })
+      // const url = `${process.env.REACT_APP_SERVER}/books`;
+      // axios.post(url, newBook)
       .then(response => this.setState({ books: [...this.state.books, response.data] }))
       .catch(error => console.error(error));
   };
 
   deleteBook = async (bookToDelete) => {
-    const url = `${process.env.REACT_APP_SERVER}/books/${bookToDelete._id}`;
-    await axios.delete(url);
-    const updatedBooks = this.state.books.filter(book => book._id !== bookToDelete._id);
-    this.setState({ books: updatedBooks });
+    try {
+      const res = await this.props.auth0.getIdTokenClaims();
+      const jwt = res.__raw;
+
+      const config = {
+        headers: { 'Authorization': `Bearer ${jwt}` }
+      }
+
+      const url = `${process.env.REACT_APP_SERVER}/books/${bookToDelete._id}`;
+      await axios.delete(url, config);
+      const updatedBooks = this.state.books.filter(book => book._id !== bookToDelete._id);
+      this.setState({ books: updatedBooks });
+    }
+    catch (error) {
+      console.error(error)
+    }
   };
 
   editBook = async (bookToEdit) => {
-    const url = `${process.env.REACT_APP_SERVER}/books/${this.state.selectedBook._id}`;
-    await axios.put(url, bookToEdit);
-    const books = [...this.state.books];
-    books.splice(books.findIndex(book => book._id === this.state.selectedBook._id), 1, bookToEdit);
-    this.setState({ books });
+    try {
+      const res = await this.props.auth0.getIdTokenClaims();
+      const jwt = res.__raw;
+
+      const config = {
+        headers: { 'Authorization': `Bearer ${jwt}` }
+      }
+
+      const url = `${process.env.REACT_APP_SERVER}/books/${this.state.selectedBook._id}`;
+      await axios.put(url, bookToEdit, config);
+      const books = [...this.state.books];
+      books.splice(books.findIndex(book => book._id === this.state.selectedBook._id), 1, bookToEdit);
+      this.setState({ books });
+    }
+    catch(error){
+      console.error(error);
+    }
   };
 
   render() {
@@ -71,7 +120,7 @@ class BestBooks extends React.Component {
     /* TODO: render all the books in a Carousel */
 
     const { books } = this.state;
-
+    console.log(this.props);
     return (
       <>
         <h2 className='text-center'>My Essential Lifelong Learning &amp; Formation Shelf</h2>
@@ -112,4 +161,4 @@ class BestBooks extends React.Component {
   }
 }
 
-export default BestBooks;
+export default withAuth0(BestBooks);
